@@ -1,20 +1,27 @@
 # sshd
 #
-# VERSION               0.0.2
-# taken from https://docs.docker.com/engine/examples/running_ssh_service/
+# Simple ssh server to sidecar on to another container, so that you can inspect
+# the volumes with the "--volumes-from" option. E.g. if you have an already running
+# container called "mycontainer" and you want to inspect the files in the volumes:
+#
+#   docker run --name mycontainer_sshd -d -p 3802:22 --volumes-from mycontainer markgrimes/sshdaemon
+#
+# Then you can ssh on to port 3802 and inspect all the files. The password is below
+# on the "chpasswd" line (this is intended as a debugging tool hence the publicly
+# visible password).
+#
+# For a more complete (but much larger image size) example see
+# https://docs.docker.com/engine/examples/running_ssh_service/
 
-FROM ubuntu:14.04
+FROM alpine
 
-RUN apt-get update && apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
+RUN apk add --no-cache dropbear openssh-sftp-server \
+    && mkdir /etc/dropbear
+
 RUN echo 'root:screencast' | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# SSH login fix. Otherwise user is kicked off after login
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
 
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+
+# Run dropbear creating host keys as required ("-R"); logging to stderr ("-E"); and
+# don't fork into the background ("-F") otherwise the container quits straight away.
+CMD ["/usr/sbin/dropbear", "-R", "-E", "-F"]
