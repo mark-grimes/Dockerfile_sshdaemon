@@ -12,8 +12,8 @@ The image is available at [markgrimes/sshdaemon](https://hub.docker.com/r/markgr
 
 Supported architectures are:
 
-amd64 - from the markgrimes/sshdaemon:amd64 tag. This is built automatically by the Docker Hub servers.
-arm32v6 - from the markgrimes/sshdaemon:arm32v6 tag. This is built manually on a Raspberry Pi and pushed up to Docker Hub.
+* amd64 - from the markgrimes/sshdaemon:amd64 tag. This is built automatically by the Docker Hub servers.
+* arm32v6 - from the markgrimes/sshdaemon:arm32v6 tag. This is built manually on a Raspberry Pi and pushed up to Docker Hub.
 
 The latest tag (or no tag) is the multi-arch manifest, i.e. docker pull markgrimes/dnsmasq or
 docker pull markgrimes/dnsmasq:latest will automatically select the correct image for your system.
