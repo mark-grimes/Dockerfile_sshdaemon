@@ -1,14 +1,14 @@
 # Config file for creating multi architecture images of this repository. See
 # https://github.com/estesp/manifest-tool for details.
-image: markgrimes/sshdaemon
+image: markgrimes/sshdaemon:latest
 manifests:
   -
-    image: markgrimes/sshdaemon.amd64
+    image: markgrimes/sshdaemon:amd64
     platform:
       architecture: amd64
       os: linux
   -
-    image: markgrimes/sshdaemon.arm32v6
+    image: markgrimes/sshdaemon:arm32v6
     platform:
       architecture: arm
       variant: v6
